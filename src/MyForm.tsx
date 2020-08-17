@@ -1,61 +1,34 @@
+import {Form, Formik, FormikProps} from 'formik';
 import React from 'react'
-import {Formik, FormikProps, FormikActions, Form, Field, ErrorMessage} from 'formik';
+import onFormikChange from "./onFormikChange";
 
 type LoginProps = {
   username: string,
-  password: string,
+  onFormikChange_username: string,
 }
 
 export default function MyForm() {
   const initialValues: LoginProps = {
     username: 'aaa',
-    password: '',
+    onFormikChange_username: '',
   };
-
-  function onSubmit(values: LoginProps, actions: FormikActions<LoginProps>) {
-    console.log({values, actions});
-    alert(JSON.stringify(values, null, 2));
-    actions.setSubmitting(false)
-  }
-
-  function validate(values: LoginProps) {
-    const errors: Partial<LoginProps> = {};
-    if (!values.username) {
-      errors.username = 'Required';
-    }
-    if (!values.password) {
-      errors.password = 'Required';
-    }
-    return errors;
-  }
-
-  function generatePassword(form: FormikProps<LoginProps>) {
-    form.setFieldValue('password', '123456');
-  }
 
   return <div>
     <h1>Hello Formik</h1>
     <Formik initialValues={initialValues}
-            validate={validate}
-            onSubmit={onSubmit}>
-      {(formikBag: FormikProps<LoginProps>) =>
-        <Form>
+            onSubmit={() => undefined}>
+      {(formikBag: FormikProps<LoginProps>) => {
+        const {values, setFieldValue} = formikBag
+        onFormikChange(values, setFieldValue);
+        return <Form>
           <div>
-            <Field type="text" name='username'/>
-            <ErrorMessage name="username" component="span"/>
-          </div>
-          <div>
-            <label>Password:
-              <Field type='password' name='password'/>
-            </label>
-            <button type='button' onClick={() => generatePassword(formikBag)}>Generate Password</button>
-            <ErrorMessage name="password" component="span"/>
-          </div>
-          <div>
-            <button>Login</button>
+            <input onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setFieldValue('username', event.target.value)
+            }} value={values.username}/>
+            <div>{JSON.stringify(values)}</div>
           </div>
         </Form>
-      }
+      }}
     </Formik>
   </div>
 };
