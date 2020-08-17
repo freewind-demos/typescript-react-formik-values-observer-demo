@@ -1,6 +1,6 @@
 import {Form, Formik, FormikProps} from 'formik';
 import React from 'react'
-import FormikObserver from "./FormikObserver";
+import UsernameFormikObserver from "./UsernameFormikObserver";
 
 export type LoginProps = {
   username: string,
@@ -37,7 +37,7 @@ export default function MyForm() {
             }} value={values.username}/>
             <div>{JSON.stringify(values)}</div>
           </div>
-          <FormikObserver formikProps={formikProps}/>
+          <UsernameFormikObserver formikProps={formikProps}/>
         </Form>
       }}
     </Formik>
