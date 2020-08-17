@@ -1,9 +1,12 @@
-TypeScript React Formik onChange Demo
+TypeScript React Formik Values Observer Demo
 =================================
 
 Formik没有提供根级别的onChange，所以我们需要利用一些方式来模拟。
 
-需要注意的是，当我们改变formik的值时，必须只在发生改变时setFieldValue，否则会引发无限循环
+有一些需要注意的：
+
+1. 只要调用了formik的`setValues`，哪怕`values`是同一个对象，也会触发新的render
+2. 使用Component的方式（FormikObserver.tsx），可以利用react的hooks，可以有效监听field的变化，比较好处理（推荐）
 
 ```
 npm install
